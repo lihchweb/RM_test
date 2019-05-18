@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<script src="./js/plugin.js"></script>
+	<!-- <script src="//cdn.bootcss.com/eruda/1.2.6/eruda.min.js"></script>
+	<script>
+		eruda.init()
+	</script> -->
+	<script scr='./js/Scratch.js'></script>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		body {
+			background-color: #580068;
+		}
+
+		.head {
+			height: 50px;
+			background: url("./images/scratcher/head.png") no-repeat;
+			background-size: cover;
+			background-position: center 10%;
+			position: relative;
+			padding-top: 6px;
+			padding-left: 6px;
+		}
+
+		.header img {
+			margin-top: 5px;
+			margin-left: 5px;
+		}
+
+		.a {
+			height: 25%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		.a ul {
+			margin: 10px 0;
+		}
+
+		.a li {
+			line-height: 22px;
+			width: 100%;
+			list-style-type: none;
+			color: #F6E862;
+			font-size: 13px;
+			font-weight: bold;
+		}
+
+		.solidline {
+			height: 1px;
+			border-bottom: 1px solid #ccc;
+			overflow: hidden;
+			margin-bottom: 80px;
+		}
+
+		.scratcher {
+			height: 400px;
+		}
+
+		.scratcher_head {
+			margin: 0 auto;
+			background-color: #3B2441;
+			width: 288px;
+		}
+
+		.scratcher_head span {
+			text-align: center;
+			font-size: 20px;
+			line-height: 35px;
+			display: block;
+			color: yellow;
+			font-weight: bold;
+		}
+
+		.scratcher_head img {
+			width: 80%;
+			margin-bottom: 5%;
+		}
+
+		/* 奖励弹出层 */
+		.reword-container {
+			display: none;
+			position: fixed;
+			width: 100%;
+			height: 100%;
+			top: 0;
+			left: 0;
+			bottom: 0;
+			right: 0;
+			background: rgba(255, 255, 255, .3);
+			z-index: 3;
+		}
+
+		.reword-mask {
+			position: absolute;
+			left: 0;
+			top: 27%;
+			background: rgba(255, 255, 255, .7);
+			width: 100%;
+			text-align: center;
+			z-index: 4;
+		}
+
+		.reword>img {
+			display: block;
+			width: 100%;
+		}
+
+		.reword .info {
+			position: absolute;
+			line-height: 28px;
+			bottom: 20px;
+			left: 0;
+			width: 100%;
+			z-index: 100;
+		}
+
+		.info img {
+			width: 44px;
+			vertical-align: middle;
+		}
+
+		.info span {
+			vertical-align: middle;
+			margin-right: 6px;
+			color: #fff;
+			font-size: 28px;
+			line-height: 28px;
+
+		}
+
+		.info .btn {
+			margin-top: 10px;
+			display: none;
+		}
+
+		.info .btn img {
+			width: 146px;
+			height: 52px;
+		}
+
+		.scratcher.cur {
+			pointer-events: none
+		}
+	</style>
+
+	<title>scratcher</title>
+	<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+</head>
+
+<body>
+	<div id="pop">
+		<div class="head">
+			<a href="index.html">
+				<img src="./images/scratcher/daily_21.png" alt id="headimg">
+			</a>
+		</div>
+		<div class="a">
+			<ul>
+				<li>1.Scratch The Card</li>
+				<li>2.Match 3 Winning Symbols To Win Grand Prize</li>
+				<li>3.You Might Met Up To 15000 Token Or $25</li>
+			</ul>
+		</div>
+		<div class="solidline"></div>
+		<div class="scratcher">
+			<div class="scratcher_head">
+				<span>SCRATCHER</span>
+				<canvas></canvas>
+				<!-- <img src="./images/scratcher/scratcher_mongolia.png" alt id="headimg"> -->
+			</div>
+		</div>
+	</div>
+
+	<!-- 奖励弹出层 -->
+	<div class="reword-container" id='reword-container'>
+		<div class="reword-mask">
+			<div class="reword">
+				<img src="images/scratcher/youwin.png" alt="">
+				<div class="info">
+					<span></span>
+					<!-- <img src="images/scratcher/dollar.png" alt=""> -->
+					<div class="btn">
+						<img src="images/scratcher/double.png" alt="">
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+</body>
+
+</html>
+<script type="text/javascript">
+	// 设置一些常量
+	var click_times_flag = localStorage.getItem('click_times_flag') ? localStorage.getItem('click_times_flag') : 0;
+	var imgurl;
+	var url = 'http://47.52.91.217:30005/v2/lottery';
+	var access_token = localStorage.getItem('access_token');
+	var tokenNUm = parseInt(localStorage.getItem('token'))
+	var usdNUm = parseInt(localStorage.getItem('usd'));
+	tokenNUm = tokenNUm ? tokenNUm : 0;
+	usdNUm = usdNUm ? usdNUm : 0;
+
+	//记录得到token/usd的值
+	var typeNum = null;
+	var _token = null, _usd = null;
+
+	// 设置值
+	function resetNum(type, num) {
+		localStorage.setItem(type, num)
+	}
+
+	// 获得刮刮卡图片
+	$.post(url + '?access_token=' + access_token, {}, function (msg) {
+		if (msg.result === 0) {
+			imgurl = "./images/scratcher/scratcher_" + msg.Images + ".jpg";
+			getImageCallback(msg);
+		} else {
+			alert(msg.error_message)
+		}
+	})
+
+	// 得到刮刮卡图片后续刮卡等操作
+	function getImageCallback(msg) {
+		var bodyStyle = document.body.style;
+		bodyStyle.mozUserSelect = 'none';
+		bodyStyle.webkitUserSelect = 'none';
+
+		var img = new Image();
+		var canvas = document.querySelector('canvas');
+		canvas.style.backgroundColor = 'transparent';
+		canvas.style.position = 'absolute';
+		canvas.style.width = '288px'
+		canvas.style.height = '288px'
+		img.src = imgurl;
+
+
+		img.addEventListener('load', function (e) {
+			var ctx;
+			var w = img.width,
+				h = img.height;
+			var offsetX = canvas.offsetLeft,
+				offsetY = canvas.offsetTop;
+			var mousedown = false;
+
+			function layer(ctx) {
+				ctx.fillStyle = 'gray';
+				ctx.fillRect(0, 0, w, h);
+			}
+
+			function eventDown(e) {
+				e.preventDefault();
+				mousedown = true;
+			}
+
+			function eventUp(e, callback) {
+				e.preventDefault();
+				mousedown = false;
+				clearCallback(e, callback)
+				// getImageData方法可能存在同源限制
+				// console.log(ctx.getImageData(0, 0, e.target.width, e.target.height).data)
+			}
+
+
+			// 初次进页面的时候，先看看localStorage有没有threeTimesFlag值
+			// 如果有，表示不是第一次进入页面，则取得这个值，反之表示是第一次，则在缓存中设置该值为0
+
+			function clearCallback(e) {
+				var target = e.target;
+				var data = ctx.getImageData(0, 0, target.width, target.height).data;
+				for (var i = 0, j = 0; i < data.length; i +=
+					4) { //data.length=c.width*c.heigth*4,一个像素块是一个对象RGBA四个值,A范围为0~255
+					if (data[i] && data[i + 1] && data[i + 2] && data[i +
+						3]) { //存在p_w_picpathData对象时j加1  PS:该像素区域透明即为不存在该对象
+						j++;
+					}
+				}
+				//超过canvas面积的(1 - 0.3) * 100%，即70%，就清除画布,执行回调
+				if (j <= target.width * target.height * 0.3) {
+					ctx.clearRect(0, 0, target.height, target.height);
+					// 成功回调
+
+					// 弹出double，刮刮卡不可再点
+					$('.reword-container').show();
+					$('.scratcher').addClass('cur');
+					
+					//reset token or usd
+					_token = msg.Token;
+					_usd = msg.USD;
+					tokenNUm += parseInt(_token);
+					usdNUm += parseInt(_usd);
+		
+					resetNum('token', tokenNUm)
+					resetNum('usd', usdNUm)
+					$('.info span').html(_token ? (_token + ' token') : _usd + ' $')
+
+					// 刮一次 次数加1
+					click_times_flag++;
+					localStorage.setItem('click_times_flag', click_times_flag)
+
+					//ad ready  show btn
+					if (window.plus.Applovin.SyncCall("IsAdReady", Type_CommonAds)) {
+						$('.info .btn').show()
+					}
+				}
+
+			}
+
+			function eventMove(e) {
+				e.preventDefault();
+				if (mousedown) {
+					if (e.changedTouches) {
+						e = e.changedTouches[e.changedTouches.length - 1];
+					}
+					var x = (e.clientX + document.body.scrollLeft || e.pageX) - offsetX || 0,
+						y = (e.clientY + document.body.scrollTop || e.pageY) - offsetY || 0;
+					with (ctx) {
+						beginPath()
+						arc(x, y, 50, 0, Math.PI * 2);
+						fill();
+					}
+				}
+			}
+
+			canvas.width = w;
+			canvas.height = h;
+			canvas.style.backgroundImage = 'url(' + img.src + ')';
+			ctx = canvas.getContext('2d');
+			ctx.fillStyle = 'transparent';
+			ctx.fillRect(0, 0, w, h);
+			layer(ctx);
+
+			ctx.globalCompositeOperation = 'destination-out';
+
+			canvas.addEventListener('touchstart', eventDown);
+			canvas.addEventListener('touchend', eventUp);
+			canvas.addEventListener('touchmove', eventMove);
+			canvas.addEventListener('mousedown', eventDown);
+			canvas.addEventListener('mouseup', eventUp);
+			canvas.addEventListener('mousemove', eventMove);
+		});
+
+	}
+
+	// double
+	function getDoubleAmount() {
+		var access_token = localStorage.getItem('access_token');
+		var url = 'http://47.52.91.217:30005/v2/lottery/double?access_token=' + access_token;
+		$('.info .btn').bind("click", method1);
+		function method1() {
+			$.post(url, {}, function (res) {
+				if (res.result === 0) {
+					$('.reword-container').hide();
+					tokenNUm += parseInt(_token);
+					usdNUm += parseInt(_usd);
+					resetNum('token', tokenNUm)
+					resetNum('usd', usdNUm)
+					//double之后跳回index页面
+					location.href = 'index.html';
+				} else {
+					alert(res.error_message)
+				}
+			})
+
+		}
+	}
+	
+	// show Ads
+	function showAds() {
+		$('.reword-container').hide();
+		window.plus.Applovin.Call("ShowAd",
+			function (result) { // 成功回掉处理
+				// alert(result[0]);
+				getDoubleAmount();
+			},
+			function (result) { // 失败处理
+				alert("Failure to play video!");
+				location.href = 'index.html'
+			});
+
+	}
+
+	$('.info img').click(function () {
+		// 判断广告准备好了木有，广告加载需要时间是否显示可以看广告最好体检判断
+		if (window.plus.Applovin.SyncCall("IsAdReady", Type_CommonAds)) {
+			showAds()
+		} else {
+			alert('Good luck next time！')
+		}
+	})
+
+	// 不点击double可以通过点击遮罩层关闭弹窗
+	$('.reword-container').bind('click', function (e) {
+		var evt = e.srcElement ? e.srcElement : e.target;
+		if (evt.id === 'reword-container') {
+			$('.reword-container').hide()
+		}
+	})
+</script>

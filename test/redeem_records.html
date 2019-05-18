@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="./js/plugin.js"></script>
+	<script src="//cdn.bootcss.com/eruda/1.2.6/eruda.min.js"></script>
+	<script>
+		eruda.init()
+	</script>
+	<title>Document</title>
+	
+	<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+</head>
+
+<body>
+	<div class="head">
+		<a href="my.html">
+			<img src="./images/cashout/daily_21.png" alt id="headimg"></a>
+	</div>
+	<div id="pop">
+		<div class="token">
+			<img class="titleimg" src="./images/redeem_records/redeem_record02.png" alt="">
+			<ur id="redeem_token">
+				<li><span><img src="./images/home/daily2_09.png" alt="">12000</span> <span>2019/03/29 12:23:12</span></li>
+				<li><span><img src="./images/home/daily2_09.png" alt="">12000</span> <span>2019/03/29 12:23:12</span></li>
+				<li><span><img src="./images/home/daily2_09.png" alt="">12000</span> <span>2019/03/29 12:23:12</span></li>
+			</ur>
+		</div>
+		<div class="line"></div>
+		<div class="token">
+			<img class="titleimg" src="./images/redeem_records/redeem_record03.png" alt="">
+			<ur id="redeem_usd">
+				<li><span><img src="./images/home/daily2_03.png" alt="">12000</span> <span>2019/03/29 12:23:12</span></li>
+				<li><span><img src="./images/home/daily2_03.png" alt="">12000</span> <span>2019/03/29 12:23:12</span></li>
+				<li><span><img src="./images/home/daily2_03.png" alt="">12000</span> <span>2019/03/29 12:23:12</span></li>
+			</ur>
+		</div>
+	</div>
+</body>
+
+</html>
+
+<script>
+	$(function () {
+		var url = 'http://47.52.91.217:30005/v2/currency/log';
+		var access_token = localStorage.getItem('access_token');
+		var html1 = '';
+		var html2 = '';
+		$.get(url + '?access_token=' + access_token, {}, function (msg) {
+			if (msg.result == 0) {
+				$.each(msg.exchange_data, function (item, val) {
+					val.create_at = format(val.create_at)
+					html1 += "<li><span><img src='./images/home/daily2_09.png' alt=''>" + val.Change + "</span>   <span>" + val.create_at + "</span></li>"
+				});
+				$.each(msg.extract_data, function (item, val) {
+					val.create_at = format(val.create_at)
+					html2 += "<li><span><img src='./images/home/daily2_03.png' alt=''>" + val.Change + "</span>   <span>" + val.create_at + "</span></li>"
+
+				});
+				$("#redeem_token").html(html1)
+				$("#redeem_usd").html(html2)
+			} else {
+				alert(msg.error_message)
+			}
+		})
+	})
+
+	function add0(m) { return m < 10 ? '0' + m : m }
+	function format(timestamp) {
+		//timestamp是整数，否则要parseInt转换,不会出现少个0的情况
+
+		var time = new Date(timestamp);
+		var year = time.getFullYear();
+		var month = time.getMonth() + 1;
+		var date = time.getDate();
+		var hours = time.getHours();
+		var minutes = time.getMinutes();
+		var seconds = time.getSeconds();
+		return year + '/' + add0(month) + '/' + add0(date) + ' ' + add0(hours) + ':' + add0(minutes) + ':' + add0(seconds);
+	}
+</script>
+
+<style lang="less" scoped>
+	* {
+		margin: 0;
+		padding: 0;
+	}
+
+	body {
+		width: 100%;
+		height: 100%;
+		background-color: #570068;
+	}
+
+	.head {
+		height: 50px;
+		background: url("./images/redeem_records/redeem_record01.png") no-repeat;
+		background-size: cover;
+		background-position: center center;
+		position: relative;
+	}
+
+	.line {
+		border-bottom: 1px solid #792a87;
+		margin-bottom: 12px;
+	}
+
+	#pop {
+		margin-top: 10%;
+		margin-left: 10%;
+	}
+
+	#pop li {
+		list-style-type: none;
+		line-height: 30px;
+	}
+
+	#pop span {
+		padding-left: 7%;
+	}
+
+	#pop li img {
+		width: 6%;
+		margin-right: 2%
+	}
+
+	.token {
+		margin-top: 20%;
+		margin-bottom: 20%;
+	}
+
+	.titleimg {
+		margin-bottom: 5%;
+	}
+</style>

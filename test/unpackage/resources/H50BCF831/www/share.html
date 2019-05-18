@@ -1,0 +1,94 @@
+<html>
+<head>
+  <title>Your Website Title</title>
+    <!-- You can use Open Graph tags to customize link previews.
+    Learn more: https://developers.facebook.com/docs/sharing/webmasters -->
+  <meta property="og:url"           content="https://www.your-domain.com/your-page.html" />
+  <meta property="og:type"          content="website" />
+  <meta property="og:title"         content="Your Website Title" />
+  <meta property="og:description"   content="Your description" />
+  <meta property="og:image"         content="https://www.your-domain.com/path/image.jpg" />
+  		<script type="text/javascript" src="js/common.js"></script>
+  		<script type="text/javascript" charset="utf-8">
+  // H5 plus事件处理
+  function plusReady(){
+  	var ev=document.getElementById('version');
+  	ev&&(ev.innerText=plus.runtime.version);
+  	plus.webview.currentWebview().show('zoom-fade-out');
+  	// 更新分享按钮
+  	plus.share.getServices(function(s){
+  		for(var i in s){
+  			shares[s[i].id]=s[i];
+  		}
+  	},function(e){
+  		console.log('updateShare failed: '+JSON.stringify(e));
+  	});
+  	// 在流应用环境下显示“创建桌面图标”
+  	if(navigator.userAgent.indexOf('StreamApp')>=0){
+  		shortcut.style.display='block';
+  	}
+  	// 设置窗口优化隐藏
+  	dragHide();
+  	// 初始化分享按钮
+  	shareBts.push({title:'微信朋友圈',id:'weixin',x:'WXSceneTimeline'});
+  	shareBts.push({title:'微信好友',id:'weixin',x:'WXSceneSession'});
+  	shareBts.push({title:'新浪微博',id:'sinaweibo'});
+  	shareBts.push({title:'QQ',id:'qq'});
+  	shareBts.push({title:'更多'});
+  }
+  document.addEventListener("plusready",plusReady,false);
+  
+  // 判断是否为流应用环境
+  var bStream = navigator.userAgent.indexOf('StreamApp')>=0;
+
+  	function shareWithSystem(){
+  		plus.share.sendWithSystem?plus.share.sendWithSystem({
+  			content:'"HelloH5"使用HTML5+技术开发，如果你有流应用引擎还能省流量秒装，快来体验吧('+(bStream?'http://m3w.cn/s/HelloH5?__streamapp':'http://www.imooc.com/mobile/app/')+')',
+  			title:'HelloH5',
+  			href:bStream?'http://m3w.cn/s/HelloH5?__streamapp':'http://www.imooc.com/mobile/app/',
+  			pictures:('Android'==plus.os.name)?null:['_www/icon.png'],
+  		}):shareWithSystemNativeJS();
+  	}
+  	function shareWithSystemNativeJS(){
+  		var main = plus.android.runtimeMainActivity(),
+  		Intent = plus.android.importClass('android.content.Intent'),
+  		File = plus.android.importClass('java.io.File'),
+  		Uri = plus.android.importClass('android.net.Uri');
+  		var intent=new Intent(Intent.ACTION_SEND),
+  		p=plus.io.convertLocalFileSystemURL('_www/icon.png'),
+  		f=new File(p),
+  		uri=Uri.fromFile(f);
+  		if(f.exists()&&f.isFile()){
+  			intent.setType('image/*');
+  			intent.putExtra(Intent.EXTRA_STREAM,uri);
+  		}else{
+  			intent.setType('text/plain');
+  		}
+  		intent.putExtra(Intent.EXTRA_SUBJECT,'HelloH5');
+  		intent.putExtra(Intent.EXTRA_TEXT,'"HelloH5"使用HTML5+技术开发，如果你有流应用引擎还能省流量秒装，快来体验吧('+(bStream?'http://m3w.cn/s/HelloH5?__streamapp':'http://www.imooc.com/mobile/app/')+')');
+  		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+  		main.startActivity(Intent.createChooser(intent,'分享"HelloH5"应用'));
+  	}
+  	
+  </script>
+</head>
+<body>
+
+  <!-- Load Facebook SDK for JavaScript -->
+  <div id="fb-root"></div>
+  <script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v3.0";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));</script>
+
+  <!-- Your share button code -->
+  <div class="fb-share-button" 
+    data-href="https://www.your-domain.com/your-page.html" 
+    data-layout="button_count">
+  </div>
+	<button onclick="shareWithSystem()">系统分享</button>
+</body>
+</html>

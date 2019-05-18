@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<script src="./js/plugin.js"></script>
+	<script src="//cdn.bootcss.com/eruda/1.2.6/eruda.min.js"></script>
+	<script>
+		eruda.init()
+	</script>
+	<link rel="stylesheet" type="text/css" href="./css/swiper-4.4.2.min.css">
+	<title>index</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		body {
+			background: url('./images/home/bg.jpg') no-repeat center;
+			background-size: cover;
+		}
+
+		.swiper-container-free-mode>.swiper-wrapper {
+			-webkit-transition-timing-function: linear;
+			-moz-transition-timing-function: linear;
+			-ms-transition-timing-function: linear;
+			-o-transition-timing-function: linear;
+			transition-timing-function: linear;
+			margin: 0 auto;
+		}
+
+		#ddd {
+			margin: 0 20px;
+			background: url('./images/home/home03.png') no-repeat;
+			background-size: contain;
+			/* height: 100%; */
+			height: 100%;
+			width: 80%;
+			display: block
+		}
+
+		.pmd {
+			height: 50px;
+			overflow: hidden;
+			background: #87348C;
+			margin: 0 5%;
+			margin-top: 60px;
+			border-radius: 8px;
+			border: 1px solid #fff;
+			background: url(./images/home/4home06.png) no-repeat 3% center;
+			-webkit-background-size: 33px 33px;
+			background-size: 33px 33px;
+		}
+
+		.roll-up {
+			height: 100%;
+			overflow: hidden;
+			padding-left: 15%;
+			color: white;
+			font-size: 14px;
+			font-style: italic;
+		}
+
+		.swiper-slide {
+			height: 60px;
+		}
+
+		.swiper-slide p {
+			line-height: 18px;
+			margin-top: 5px
+		}
+
+		#home .pics {
+			padding-top: 10px;
+			text-align: center;
+			width: 100%;
+		}
+
+		#home .top,
+		#home .bottom {
+			z-index: 10;
+			height: 50px;
+			width: 100%;
+			background-color: #000;
+			position: fixed;
+			display: flex;
+			justify-content: space-between;
+		}
+
+		#home .top div,
+		#home .bottom div {
+			/* padding: 0 20px; */
+			line-height: 50px;
+			display: flex;
+			flex: 1;
+		}
+
+		#home .top {
+			top: 0;
+		}
+
+		#home .bottom {
+			bottom: 0;
+		}
+
+		.mask {
+			display: none;
+			position: fixed;
+			background: rgb(234, 225, 225, .4);
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+			z-index: 20;
+			color: #fff;
+		}
+
+		.mask-inner {
+			position: absolute;
+			bottom: 0;
+			left: 0;
+			background: rgb(105, 24, 134);
+		}
+
+		.close-mask {
+			width: 60%;
+			background: #fff;
+			height: 20px;
+			margin: 10px auto 20px auto;
+			border-radius: 6px;
+			padding-top: 6px;
+		}
+
+		.arrow {
+			-webkit-box-sizing: border-box;
+			-moz-box-sizing: border-box;
+			box-sizing: border-box;
+			width: 0;
+			height: 0;
+			border-left: 10px solid transparent;
+			border-right: 10px solid transparent;
+			border-top: 10px solid #000000;
+			margin: 0 auto;
+		}
+
+		.entry {
+			margin: 0 auto;
+		}
+
+		.entry img {
+			width: 40%;
+			margin-left: 5%;
+			margin-bottom: 20px;
+		}
+	</style>
+
+	<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+	<script src="./js/swiper-4.4.2.min.js"></script>
+</head>
+
+<body>
+	<div id="home">
+		<div class="top">
+			<div style="padding-left:20px">
+				<img src="./images/home/daily2_03.png" alt="" style="width:20px;height:25px;margin-top:15px">
+				<span style="color:#fff;margin-left:20px" id="usd"></span>
+			</div>
+			<div style="color:#FDEC65;justify-content: space-around;font-style:italic;font-weight:700">
+				<span>RICH ME</span>
+			</div>
+			<div style="padding-right:20px">
+				<span style="color:#fff;margin-right:20px" id="token"></span>
+				<img src="./images/home/daily2_09.png" alt="" style="width:20px;height:25px;margin-top:15px">
+			</div>
+		</div>
+		<div class="pmd">
+			<div class="swiper-container roll-up">
+				<div class="swiper-wrapper">
+				</div>
+			</div>
+		</div>
+		<div class="pics">
+			<a href="https://t.me/RichMe_official">
+				<img src="./images/home/telegram.png" alt="" style="width:90%">
+			</a>
+		</div>
+		<div class="pics scratch-card">
+			<img src="./images/home/candy.png" alt="" style="width:90%">
+		</div>
+		<div class="pics watchAds">
+			<img src="./images/home/teaure.png" alt="" style="width:90%">
+		</div>
+		<div class="pics scratch-card">
+			<img src="./images/home/candy2.png" alt="" style="width:90%">
+		</div>
+		<div class="pics watchAds">
+			<img src="./images/home/free-token.png" alt="" style="width:90%">
+		</div>
+		<div class="pics scratch-card" style="margin-bottom:50px;padding-bottom:10px">
+			<img src="./images/home/candy3.png" alt="" style="width:90%">
+		</div>
+		<div class="bottom">
+			<div style="padding-left:20px">
+				<img src="./images/home/home13.png" alt="" style="width:20px;height:25px;margin-top:15px">
+				<div style="color:#fff">
+					<p id="timeshow"></p>
+					<!-- <P>01:02:03</P> -->
+				</div>
+			</div>
+			<div style="justify-content: space-around">
+				<img src="./images/home/home11.png" alt="" style="width: 80%;" id="earnmore">
+			</div>
+			<div style="justify-content: space-around;padding-right:20px">
+				<a href="javascript:clicked('share.html')">
+					<img src="./images/home/4home03.png" alt="" style="width:35px;height:35px;margin-top:7px">
+				</a>
+				<a href="javascript:clicked('my.html')">
+					<img src="./images/home/4home06.png" alt="" style="width:35px;height:35px;margin-top:7px">
+				</a>
+			</div>
+		</div>
+	</div>
+	<div class="mask">
+		<div class="mask-inner">
+			<div class="close-mask">
+				<div class="arrow"></div>
+			</div>
+			<div class="entry">
+				<a href="javascript:clicked('daily_reward_des.html')"><img src="images/daily_reward/daily-reward.png"
+						alt=""></a>
+
+				<img src="images/daily_reward/free-token.png" class='watchAds' alt="">
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
+
+<script>
+
+	//取消浏览器的所有事件，使得active的样式在手机上正常生效
+	document.addEventListener('touchstart', function () {
+		return false;
+	}, true);
+	// 禁止选择
+	document.oncontextmenu = function () {
+		return false;
+	};
+	// H5 plus事件处理
+	function plusReady() {
+		// Android处理返回键
+		plus.key.addEventListener('backbutton', function () {
+			('iOS' == plus.os.name) ? plus.nativeUI.confirm('Exit ?', function (e) {
+				if (e.index > 0) {
+					plus.runtime.quit();
+				}
+			}, 'HelloH5', ['cancel', 'ok']) : (confirm('Exit ?') && plus.runtime.quit());
+		}, false);
+		// 关闭启动界面
+		plus.navigator.setStatusBarBackground('#D74B28');
+		setTimeout(function () {
+			plus.navigator.closeSplashscreen();
+		}, 200);
+	}
+	if (window.plus) {
+		plusReady();
+	} else {
+		document.addEventListener('plusready', plusReady, false);
+	}
+	// 处理点击事件
+	var _openw = null;
+	var as = 'pop-in';// 默认窗口动画
+	/**
+	 * 打开新窗口
+	 * @param {String} id	加载的页面地址，也用作窗口标识
+	 * @param {String} t    页面的标题
+	 * @param {String} d	文档页面文件名称（doc目录下），不传入则使用页面的标题
+	 */
+	function clicked(id, t, d) {
+		if (_openw) { return; }  // 防止快速点击
+		var ws = {
+			scrollIndicator: 'none',
+			scalable: false,
+			popGesture: 'close',
+			backButtonAutoControl: 'close',
+			// titleNView: {
+			// 	autoBackButton: true,
+			// 	backgroundColor: '#D74B28',
+			// 	titleColor: '#CCCCCC'
+			// }
+		};
+		t && (ws.titleNView.titleText = t, d || (d = t.toLowerCase()));
+		d && (ws.titleNView.buttons = [{
+			fontSrc: '_www/helloh5.ttf',
+			text: '\ue301',
+			fontSize: '22px',
+			onclick: 'javascript:openDoc("/doc/' + d + '.html")'
+		}]);
+		_openw = plus.webview.create(id, id, ws);
+		_openw.addEventListener('loaded', function () {//页面加载完成后才显示
+			_openw && _openw.show(as, null, function () {
+				_openw = null;//避免快速点击打开多个页面
+			});
+		}, false);
+		_openw.addEventListener('hide', function () {
+			_openw = null;
+		}, false);
+		_openw.addEventListener('close', function () {//页面关闭后可再次打开
+			_openw = null;
+		}, false);
+	}
+	$(function () {
+		// home.html display
+		var access_token = localStorage.getItem('access_token');
+		if (!access_token) {
+			location.href = 'login.html';
+		}
+		var token = localStorage.getItem('token');
+		var usd = localStorage.getItem('usd');
+		// to avoid NaN
+		token = token ? token : 0;
+		usd = usd ? usd : 0;
+		$("#usd").text('$' + usd);
+		$("#token").text(token);
+
+		showtime();
+
+		function showtime() {
+			// time ontimeupdate
+			var timenow = new Date().getTime() - 15 * 3600;
+			var mydate = new Date(timenow);
+			var hour = 23 - mydate.getHours(); //获取当前小时数(0-23)
+			var minutes = 59 - mydate.getMinutes(); //获取当前分钟数(0-59)
+			var seconds = 59 - mydate.getSeconds(); //获取当前秒数(0-59)
+			var timeshow = (hour < 10 ? '0' + hour : hour) + ':' + (minutes < 10 ? '0' + minutes : minutes) + ':' + (seconds <
+				10 ? '0' + seconds : seconds);
+			$("#timeshow").text(timeshow)
+			setTimeout(showtime, 1000)
+		}
+	})
+	// 走马灯效果
+	var access_token = localStorage.getItem('access_token');
+	var url = "http://47.52.91.217:30005/v2/lottery/history?access_token=" + access_token
+
+	var lopps = new Swiper('.swiper-container', {
+		loop: true,
+		direction: 'vertical',
+		observer: true,
+		speed: 1000,
+		autoplay: {
+			delay: 2000,
+			disableOnInteraction: false,
+			waitForTransition: true,
+		},
+	})
+
+	$(".swiper-wrapper").html("");
+
+	$.post(url, {}, function (res) {
+		if (res.result === 0) {
+			var data = res.Data;
+			data.forEach(function (item, i) {
+				lopps.appendSlide('<div class="swiper-slide"><p>' + item.name + '</p><p>congratulation win ' + (item.token ? item.token : item.usd) 
+					+ (item.token ? ' token': ' $')+ '</p></div>')
+			})
+			// 从第一个开始循环
+			lopps.slideTo(1, 0.01)
+		} else if (res.result === 1) {
+			alert(res.error_message)
+		}
+	})
+
+	$("#earnmore").click(function () {
+		$('.mask').show();
+	})
+
+	$(".close-mask").click(function () {
+		$('.mask').hide();
+	})
+
+	// 广告看完的回调
+	function adsStart() {
+		window.plus.Applovin.Call("ShowAd",
+			function (result) { // 成功回掉处理
+				adsEnd()
+				// alert(result[0]);
+			},
+			function (result) { // 失败处理
+				alert("Good luck next time！");
+			});
+	}
+
+	// 成功看完广告，给奖励
+	function adsEnd() {
+		var access_token = localStorage.getItem('access_token');
+		var token = localStorage.getItem('token')
+		var url = "http://47.52.91.217:30005/v2/watch/video?access_token=" + access_token;
+		$.post(url, {}, function (res) {
+			if (res.result === 0) {
+				token += res.token
+				localStorage.setItem('token', token)
+				$("#token").text(token);
+			} else if (res.result === 1) {
+				alert(res.error_message)
+			}
+		})
+	}
+
+
+	// 挂三次看广告,看完广告没奖励 (区别正常看广告的)
+
+	
+	//每次点击都查看是否已经超过次数，并且刮了三次，够三次，播放广告
+	function showADsOrNot() {
+		var watch_video_times = localStorage.getItem('watch_video_times')
+		if (watch_video_times >= 10) {
+			alert('No more Times')
+		} else {
+			//广告准备好 开始看广告 看完发送请求
+			if (window.plus.Applovin.SyncCall("IsAdReady", Type_CommonAds)) {
+				adsStart()
+			} else {
+				alert('Good luck next time！')
+			}
+		}
+	}
+
+	$('.watchAds').bind('click', function () {
+		showADsOrNot();
+	})
+
+
+	//获取实时观看次数 和 刮卡次数
+	function getRealTimes() {
+		var access_token = localStorage.getItem('access_token');
+		var url = 'http://47.52.91.217:30005/v2/task/progress?access_token=' + access_token
+
+		$.ajax({
+			type: 'get',
+			url: url,
+			data: {},
+			success: function (res) {
+				if (res.result === 0) {
+					console.log(res)
+					var gacha_times = res.scatch_card;
+					var watch_video_times = res.watch_video;
+					var click_times_flag = localStorage.getItem('click_times_flag') ? localStorage.getItem('click_times_flag') : 0;
+					scrathCardsFun(gacha_times, watch_video_times, click_times_flag);
+				} else {
+					alert(res.error_message)
+				}
+			},
+			error: function (error) {
+				alert('error!')
+			}
+		})
+	}
+
+	/**
+	 * 刮刮卡逻辑
+	 * @param {String} gacha_times	已经刮卡次数
+	 * @param {String} watch_video_times    看视频次数
+	 * @param {String} click_times_flag	刮的第几次(挂第三次就看视频，并且次数清0)
+	 */	
+	function scrathCardsFun(gacha_times, watch_video_times, click_times_flag) {
+		$('.scratch-card').bind('click', function () {
+			//刮的总次数超过四十次
+			if (gacha_times >= 40) {
+				//跳往daily_reward页面
+				location.href = 'daily_reward_des.html'
+			} else {
+				//看够三次 则播放广告
+				if (click_times_flag == 3) {
+					if (window.plus.Applovin.SyncCall("IsAdReady", Type_CommonAds)) {
+						window.plus.Applovin.Call("ShowAd",
+							function (result) { // 成功回掉处理
+								// click_times_flag值重置为0
+								localStorage.setItem('click_times_flag', 0)
+								// 跳往刮刮卡页面
+								location.href = 'scratcher.html'
+							},
+							function (result) { // 失败处理
+								alert("Good luck next time！");
+							});
+					} else {
+						alert('Good luck next time！')
+					}
+				} else {
+					//反之直接跳往刮刮卡页面
+					location.href = 'scratcher.html'
+				}
+			}
+		})
+	}
+
+	getRealTimes();
+	
+
+</script>

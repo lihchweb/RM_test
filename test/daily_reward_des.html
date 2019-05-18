@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<script src="./js/plugin.js"></script>
+	<link rel="stylesheet" href="css/reset.css">
+	<script src="//cdn.bootcss.com/eruda/1.2.6/eruda.min.js"></script>
+	<script>
+		eruda.init()
+	</script>
+	<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+	<script src="js/progressbar.js"></script>
+	<title>DAILY REWARD</title>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		#bg_reward {
+			position: fixed;
+			width: 100%;
+			height: 100%;
+			top: 0;
+			left: 0;
+			bottom: 0;
+			right: 0;
+			z-index: -1;
+		}
+
+		body {
+			color: #FEEC60;
+			font-style: italic;
+		}
+
+		.header {
+			font-size: 30px;
+			font-weight: bold;
+			padding: 5px 0;
+			background: #782C87;
+			text-align: center;
+			position: relative;
+		}
+
+		.header span {
+			display: inline-block;
+			height: 100%;
+		}
+
+		.header img {
+			position: absolute;
+			top: 8%;
+			left: 3%;
+			padding: 5px;
+			width: 20px;
+			height: 30px;
+		}
+
+		.top-text {
+			text-align: center;
+			font-style: italic;
+			font-weight: bold;
+			line-height: 26px;
+			padding: 30px 0;
+			border-bottom: 1px solid #81308A;
+		}
+
+		.tab {
+			display: -webkit-box;
+			display: -ms-flexbox;
+			display: flex;
+			width: 80%;
+			margin: 0 auto;
+			margin-top: 30px;
+			border: 1px solid #FDEC5F;
+			border-radius: 6px;
+			overflow: hidden;
+		}
+
+		.tab li {
+			-webkit-box-flex: 1;
+			-ms-flex: 1;
+			flex: 1;
+			text-align: center;
+			height: 36px;
+			line-height: 36px;
+			font-weight: bold;
+			border-right: 1px solid #FDEC5F;
+			color: #580068;
+			background: #FDEB64;
+		}
+
+		.tab li:last-of-type {
+			border: none;
+		}
+
+		.tab li.cur {
+			background: #580068;
+			color: #FDEB64;
+		}
+
+		.tab li:last-of-type {
+			border-right: none;
+		}
+
+		.canvas-container {
+			margin: 30px auto;
+			position: relative;
+			width: 260px;
+			height: 260px;
+		}
+
+		#loading {
+			position: absolute;
+			left: 0;
+			top: 0;
+			display: block;
+			margin: 0 auto;
+			z-index: 20;
+		}
+
+		.canvas-container .mask {
+			position: absolute;
+			width: 140px;
+			height: 60px;
+			background: #580068;
+			z-index: 21;
+			bottom: 0;
+			left: 60px;
+			text-align: center;
+			line-height: 60px;
+		}
+
+		.mask div {
+			position: absolute;
+			bottom: -18px;
+		}
+
+		.mask .start {
+			left: -16px;
+		}
+
+		.mask .end {
+			right: -16px;
+		}
+
+		.progress {
+			padding: 30px;
+			border-top: 1px solid #81308A;
+			;
+		}
+
+		.progress h3 {
+			line-height: 3vh;
+			height: 3vh;
+		}
+
+		.progress li {
+			padding: 10px;
+		}
+
+		.progress li .text {
+			padding-bottom: 10px;
+		}
+
+		/*daily-list */
+		.daily-list, 
+		.total-list {
+			padding: 60px 2% 30px 2%;
+			font-style: normal;
+		}
+
+		.daily-list li,
+		.total-list li {
+			display: -webkit-box;
+			display: -ms-flexbox;
+			display: flex;
+			padding: 10px 2%;
+			border-bottom: 1px solid #81308A;
+		}
+
+		.daily-list .left-part,
+		.total-list .left-part {
+			width: 50%;
+			height: 30px;
+			padding-top: 10px;
+			line-height: 30px;
+		}
+
+		.daily-list .left-part .name,
+		.total-list .left-part .name {
+			width: 50%;
+			overflow: hidden;
+			text-overflow: ellipsis;
+			white-space: nowrap;
+		}
+
+		.daily-list li:nth-of-type(2) .index img,
+		.total-list li:nth-of-type(2) .index img,
+		.daily-list li:nth-of-type(1) .index img,
+		.total-list li:nth-of-type(1) .index img,
+		.daily-list li:nth-of-type(3) .index img,
+		.total-list li:nth-of-type(3) .index img {
+			width: 32px;
+			height: 29px;
+		}
+
+		.left-part span {
+			margin-right: 4px;
+			margin-top: 4px;
+			display: inline-block;
+			vertical-align: middle;
+		}
+
+		.avatar img {
+			width: 17px;
+			height: 21px;
+			vertical-align: middle;
+		}
+
+		.daily-list .right-part,
+		.total-list .right-part {
+			-webkit-box-flex: 1;
+			-ms-flex: 1;
+			flex: 1;
+			text-align: right;
+			font-size: 13px;
+			height: 40px;
+		}
+
+		.right-part .token-count {
+			background: url(images/daily_reward/daily_dollar.png) no-repeat right center;
+			-webkit-background-size: 20px 20px;
+			background-size: 20px 20px;
+			padding-right: 26px;
+		}
+
+		.right-part .dollar-count {
+			background: url(images/daily_reward/daily_token.png) no-repeat right center;
+			-webkit-background-size: 20px 20px;
+			background-size: 20px 20px;
+			padding-right: 26px;
+		}
+
+		.tab_container {
+			position: relative;
+		}
+		
+		#question {
+			position: absolute;
+			display: block;
+			bottom: -58px;
+			right: 10%;
+			width: 36px;
+			height: 40px;
+			z-index: 30;
+		}
+	</style>
+</head>
+
+<body>
+	<img id="bg_reward" src="images/daily_reward/daily-reward-bg.jpg" alt="">
+	<div class="header">
+		<a href="index.html"><strong><img src="images/daily_reward/daily_back.png" alt=""></strong></a>
+		<span>DAILY REWARD</span>
+	</div>
+	<div class="top-text">
+		<p>Reward Up To $50 Everyday</p>
+		<p>By Earning Token</p>
+		
+	</div>
+
+	<!-- tab选中状态颜色为 #FDEB64 -->
+	<div class="tab_container">
+		<ul class="tab">
+			<li>SCHEDULE</li>
+			<li>DAILY</li>
+			<li>TOTAL</li>
+		</ul>
+		<img src="images/daily_reward/question.png" id="question" alt="">
+	</div>
+	
+
+	<ul class="reward-detail">
+		<!-- SCHEDULE start -->
+		<li>
+			<div class="canvas-container">
+				<canvas id="loading" width="260" height="260"></canvas>
+				<div class="mask">
+					<p>$15.0</p>
+					<div class="start">$0.0</div>
+					<div class="end">$50.0</div>
+				</div>
+			</div>
+
+			<!-- progress -->
+			<div class="progress">
+				<h3>Daily Task Progress</h3>
+				<ul class="progress-bar">
+					<li>
+						<div class="text">Scratch Cards</div>
+						<div id="cards"></div>
+					</li>
+					<li>
+						<div class="text">Watch Video</div>
+						<div id="video"></div>
+					</li>
+					<li>
+						<div class="text">Inviate Your Friends</div>
+						<div id="friend"></div>
+					</li>
+					<li>
+						<div class="text">Earn Free Token</div>
+						<div id="token"></div>
+					</li>
+				</ul>
+			</div>
+		</li>
+		<!-- SCHEDULE end -->
+
+		<!-- DAILY start -->
+		<li>
+			<ul class="daily-list">
+			</ul>
+		</li>
+		<!-- DAILY end -->
+
+		<!-- Total start -->
+		<li>
+			<ul class="total-list">
+			</ul>
+		</li>
+		<!-- total end -->
+	</ul>
+
+
+	<script type="text/javascript">
+		function drawMain(drawing_elem, percent, forecolor, bgcolor) {
+			/*
+				@drawing_elem: 绘制对象
+				@percent：绘制圆环百分比, 范围[0, 100]
+				@forecolor: 绘制圆环的前景色，颜色代码
+				@bgcolor: 绘制圆环的背景色，颜色代码
+			*/
+
+			var drawing_elem = document.getElementById(drawing_elem);
+			var context = drawing_elem.getContext("2d");
+			var center_x = drawing_elem.width / 2;
+			var center_y = drawing_elem.height / 2;
+			var rad = Math.PI * 2 / 100;
+			var speed = 0;
+
+			// 绘制背景圆圈
+			function backgroundCircle() {
+				context.save();
+				context.beginPath();
+				context.lineWidth = 8; //设置线宽
+				var radius = center_x - context.lineWidth;
+				context.lineCap = "round";
+				context.strokeStyle = bgcolor;
+				context.arc(center_x, center_y, radius, Math.PI * 0.5, Math.PI * 2.5, false);
+				context.stroke();
+				context.closePath();
+				context.restore();
+			}
+
+			//绘制运动圆环
+			function foregroundCircle(n) {
+				context.save();
+				context.strokeStyle = forecolor;
+				context.lineWidth = 8;
+				context.lineCap = "round";
+				var radius = center_x - context.lineWidth;
+				context.beginPath();
+				//用于绘制圆弧context.arc(x坐标，y坐标，半径，起始角度，终止角度，顺时针/逆时针)
+				context.arc(center_x, center_y, radius, Math.PI * 0.7, Math.PI * 0.7 + n * rad, false);
+				context.stroke();
+				context.closePath();
+				context.restore();
+			}
+
+			//绘制文字
+			function text(n) {
+				//save和restore可以保证样式属性只运用于该段canvas元素
+				context.save();
+				context.fillStyle = forecolor;
+				var font_size = 40;
+				context.font = font_size + "px Helvetica";
+				var text_width = context.measureText(n.toFixed(0) + "%").width;
+				context.fillText(n.toFixed(0) + "%", center_x - text_width / 2, center_y + font_size / 2);
+				context.restore();
+			}
+
+			//执行动画
+			(function drawFrame() {
+				window.requestAnimationFrame(drawFrame);
+				context.clearRect(0, 0, drawing_elem.width, drawing_elem.height);
+				backgroundCircle();
+				text(speed);
+				foregroundCircle(speed);
+				if (speed >= percent) return;
+				speed += 1;
+			}());
+		}
+
+		function drawLine(line_elem, target, text) {
+			/*
+				@line_elem: 绘制对象
+				@target：线的长度, 范围[0, 1]
+				@forecolor: 绘制圆环的前景色，颜色代码
+				@bgcolor: 绘制圆环的背景色，颜色代码
+			*/
+
+			var lineConfig = {
+				//动画效果
+				// easing: 'easy-out',
+				strokeWidth: 2,
+				//动态条颜色
+				color: '#FDEC5F',
+				svgStyle: {
+					display: 'block',
+					//占container元素的宽度百分比
+					width: '100%',
+					borderRadius: '7px'
+				},
+				//整体颜色
+				trailColor: '#3E0049',
+				// 文本样式设置
+				text: {
+					value: text,
+					style: {
+						color: '#fff',
+						position: 'absolute',
+						right: '0%',
+						top: '1vh',
+						padding: 0,
+						margin: 0,
+					},
+				},
+				//动画持续时间
+				duration: 1200,
+			}
+			var bar = new ProgressBar.Line(line_elem, lineConfig);
+			bar.animate(target);
+		}
+
+		function linePercent() {
+			var access_token = localStorage.getItem('access_token');
+			var url = 'http://47.52.91.217:30005/v2/task/progress?access_token=' + access_token
+
+			$.ajax({
+				type: 'get',
+				url: url,
+				data: {},
+				success: function (res) {
+					if (res.result === 0) {
+						// 画线(值需动态改变)
+						drawLine('#cards',res.scatch_card/res.scatch_card_limit, res.scatch_card + '/' + res.scatch_card_limit+  ' Cards')
+						drawLine('#video', res.watch_video/res.watch_video_limit, res.watch_video + '/' + res.watch_video_limit + ' Videos')
+						drawLine('#friend', res.invite_friend/res.invite_friend_limit, res.invite_friend + '/' + res.invite_friend_limit+ ' Tokens')
+						drawLine('#token',  res.earn_free_token/res.earn_free_token_limit, res.earn_free_token + '/' + res.earn_free_token_limit+' Tokens')
+					} else {
+						alert(res.error_message)
+					}
+				},
+				error: function (error) {
+					alert('error!')
+				}
+			})
+		}
+
+		linePercent()
+		
+
+		// tab切换
+		function changeTab() {
+			// 样式改变
+			var tabDom = $('.tab').find('li');
+			var urlDom = $('.reward-detail > li')
+			tabDom.eq(0).addClass('cur').siblings().removeClass('cur')
+			urlDom.eq(0).show().siblings().hide()
+			$.each(tabDom, function (i, ele) {
+				ele.onclick = function () {
+					var _self = $(ele)
+					_self.addClass('cur').siblings().removeClass('cur');
+					urlDom.eq(i).show().siblings().hide();
+				}
+			})
+			// tabDom.trigger('click')
+		}
+		changeTab()
+
+		function changeUsd(num) {
+			$('.mask p').html( '$' + num)
+		}
+
+		function taskProgress() {
+			var access_token = localStorage.getItem('access_token');
+			var url = 'http://47.52.91.217:30005/v2/extrareward?access_token=' + access_token
+
+			$.ajax({
+				type: 'get',
+				url: url,
+				data: {},
+				success: function (res) {
+					if (res.result === 0) {
+						var data = res.data;
+						changeUsd(res.Achieve)
+						//求出百分比
+						var percent = parseInt(res.Achieve) /parseInt(res.Limit)
+						// 画圆(值需动态改变)
+						drawMain('loading', percent, '#FDEB65', '#61239E')
+					} else {
+						alert(res.error_message)
+					}
+				},
+				error: function (error) {
+					alert('error!')
+				}
+			})
+		}
+
+		taskProgress();
+
+		function getDailyLists(type) {
+			var access_token = localStorage.getItem('access_token');
+			var url = 'http://47.52.91.217:30005/v2/rank/daily?access_token=' + access_token
+			type.html('')
+			$.ajax({
+				type: 'get',
+				url: url,
+				data: {},
+				success: function (res) {
+					if (res.result === 0) {
+						getStr(res.Data, type)
+					} else {
+						alert(res.error_message)
+					}
+				},
+				error: function (error) {
+					alert('error!')
+				}
+			})
+		}
+
+		function getTotalLists(type) {
+			var access_token = localStorage.getItem('access_token');
+			var url = 'http://47.52.91.217:30005/v2/rank/global?access_token=' + access_token
+			type.html('')
+			$.ajax({
+				type: 'get',
+				url: url,
+				data: {},
+				success: function (res) {
+					if (res.result === 0) {
+						getStr(res.Data, type)
+					} else {
+						alert(res.error_message)
+					}
+				},
+				error: function (error) {
+					alert('error!')
+				}
+			})
+		}
+
+		function getStr(data, type) {
+			var str = ''
+			$.each(data, function (i, e) {
+				str += '<li><div class="left-part"><span class="index">' + (i + 1) +
+					'</span><span class="avatar"><img src="images/daily_reward/daily_avatar.png" /></span>' +
+					'<span class="name">' + e.Name + '</span></div>' +
+					'<div class="right-part"> <div class="token-count">' + e.Token + '</div>' +
+					'<div class="dollar-count">' + e.USD + '</div>' +
+					'</li>';
+			})
+			
+			type.html(str)
+			// 前三名设置图标
+			// console.log($('.daily-list li:eq(0)').find('.index').html())
+			// $('.daily-list li:eq(0)').find('index').html('<img src="images/daily_reward/daily_first.png" alt="">')
+			// $('.daily-list li:eq(1)').find('index').html('<img src="images/daily_reward/daily_second.png" alt="">')
+			// $('.daily-list li:eq(2)').find('index').html('<img src="images/daily_reward/daily_third.png" alt="">')
+		}
+		getDailyLists($('.daily-list'));
+		getTotalLists($('.total-list'));
+
+		// question
+
+		$('#question').bind('click', function() {
+			location.href = 'daily_reward_des_info.html'
+		})
+	</script>
+</body>
+
+</html>

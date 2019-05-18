@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<script src="./js/plugin.js"></script>
+	<script src="//cdn.bootcss.com/eruda/1.2.6/eruda.min.js"></script>
+	<script>
+		eruda.init()
+	</script>
+	<title>PROFILE</title>
+	<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		body {
+			background-color: #580068;
+		}
+
+		#flyword {
+			text-align: center;
+			color: white;
+			font-size: 16px
+		}
+
+		#mm {
+			text-align: center
+		}
+
+		.fly {
+			height: 30%;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		body {
+			width: 100%;
+			height: 100%;
+		}
+
+		.head {
+			height: 50px;
+			background: url("./images/my/my01.png") no-repeat;
+			background-size: cover;
+			background-position: center center;
+			position: relative;
+		}
+
+		.head1 {
+			background-image: url('./images/my/my03.png');
+			margin-bottom: 14px;
+		}
+
+		.head2 {
+			background-image: url('./images/my/my05.png');
+			margin-bottom: 14px;
+		}
+
+		.head3 {
+			background-image: url('./images/my/my07.png');
+			margin-bottom: 14px;
+		}
+
+		.head4 {
+			background-image: url('./images/my/loginout.png');
+			margin-bottom: 14px;
+		}
+
+		#headimg {
+			height: 25px;
+			position: absolute;
+			top: 50%;
+			left: 20px;
+			transform: translate(-50%, -50%);
+		}
+
+		.imghead {
+			height: 25px;
+			position: absolute;
+			top: 50%;
+			right: 20px;
+			transform: translate(-50%, -50%) rotate(180deg);
+		}
+
+		#my {
+			height: 130px;
+			width: 100%;
+		}
+
+		.tip {
+			height: 8%;
+		}
+
+		#photo {
+			width: 40%;
+			height: 100%;
+			float: left;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+		}
+
+		#photo img {
+			height: 100px;
+			width: 100px;
+		}
+
+		.line {
+			border-bottom: 1px solid #792a87;
+			margin-bottom: 12px;
+		}
+
+		#myother {
+			width: 60%;
+			height: 100%;
+			float: left;
+			display: flex;
+			/* flex-wrap:wrap; */
+			align-items: center;
+			/* flex-direction:column; */
+			color: white;
+			font-style: italic;
+
+		}
+	</style>
+</head>
+
+<body>
+	<div id="pop">
+		<div class="head">
+			<a href="index.html">
+				<img src="./images/cashout/daily_21.png" alt id="headimg"></a>
+		</div>
+		<div id="my">
+			<div id="photo">
+				<img src="./images/my/header.png" alt>
+			</div>
+
+			<div id="myother">
+				<div id="son">
+					<div id="name"></div>
+					<div id="email"></div>
+				</div>
+			</div>
+		</div>
+		<div class="line"></div>
+		<div class="head head1">
+			<a href="javascript:clicked('mytoken.html')">
+				<img src="./images/cashout/daily_21.png" alt class="imghead">
+			</a>
+		</div>
+		<div class="head head2">
+			<a href="javascript:clicked('cashout.html')">
+				<img src="./images/cashout/daily_21.png" alt class="imghead">
+			</a>
+		</div>
+		<div class="head head3">
+			<a href="javascript:clicked('redeem_records.html')">
+				<img src="./images/cashout/daily_21.png" alt class="imghead">
+			</a>
+		</div>
+		<div class="head head4">
+			<a href="login.html">
+				<img src="./images/cashout/daily_21.png" alt class="imghead">
+			</a>
+		</div>
+		<div class="line"></div>
+		<div class="fly">
+			<div id="mm">
+				<a href="https://t.me/RichMe_official">
+					<img src="./images/my/my10.png" alt="" style="height:150px">
+				</a>
+				<div id="flyword">RichMeOfficial@gmail.com</div>
+			</div>
+
+		</div>
+	</div>
+</body>
+
+</html>
+
+<script>
+	// 处理点击事件
+	var _openw=null;
+	var as='pop-in';// 默认窗口动画
+	/**
+	 * 打开新窗口
+	 * @param {String} id	加载的页面地址，也用作窗口标识
+	 * @param {String} t    页面的标题
+	 * @param {String} d	文档页面文件名称（doc目录下），不传入则使用页面的标题
+	 */
+	function clicked(id, t, d){
+		if(_openw){return;}  // 防止快速点击
+		var ws={
+			scrollIndicator: 'none',
+			scalable: false,
+			popGesture: 'close',
+			backButtonAutoControl: 'close',
+			// titleNView: {
+			// 	autoBackButton: true,
+			// 	backgroundColor: '#D74B28',
+			// 	titleColor: '#CCCCCC'
+			// }
+		};
+		t&&(ws.titleNView.titleText=t,d||(d=t.toLowerCase()));
+		d&&(ws.titleNView.buttons=[{
+			fontSrc: '_www/helloh5.ttf',
+			text: '\ue301',
+			fontSize: '22px',
+			onclick: 'javascript:openDoc("/doc/'+d+'.html")'
+		}]);
+		_openw=plus.webview.create(id, id, ws);
+		_openw.addEventListener('loaded', function(){//页面加载完成后才显示
+			_openw&&_openw.show(as, null, function(){
+				_openw=null;//避免快速点击打开多个页面
+			});
+		}, false);
+		_openw.addEventListener('hide', function(){
+			_openw=null;
+		}, false);
+		_openw.addEventListener('close', function(){//页面关闭后可再次打开
+			_openw=null;
+		}, false);
+	}
+	$(function () {
+		var name = localStorage.getItem('name');
+		var email = localStorage.getItem('email');
+		$("#name").text(name);
+		$("#email").text(email);
+	})
+
+	$(function() {
+		$('#photo').bind('click',function() {
+			location.href = 'reset_password.html'
+		})
+	})
+</script>

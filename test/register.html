@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<script src="./js/plugin.js"></script>
+	<script src="//cdn.bootcss.com/eruda/1.2.6/eruda.min.js"></script>
+	<script>
+		eruda.init()
+	</script>
+	<title>SIGN UP</title>
+	<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+	<style>
+		* {
+			margin: 0;
+			padding: 0;
+		}
+
+		#bg_register {
+			position: fixed;
+			width: 100%;
+			height: 100%;
+			top: 0;
+			left: 0;
+			bottom: 0;
+			right: 0;
+			z-index: -1;
+		}
+/* 
+		body {
+			background: url("./images/login/login.png") no-repeat center center fixed;
+			-webkit-background-size: cover;
+			-moz-background-size: cover;
+			-o-background-size: cover;
+			background-size: cover;
+		} */
+
+		#register p {
+			color: white;
+			font-size: 32px;
+			font-weight: 700;
+			text-align: center;
+			margin-top: 70px;
+		}
+
+		.sign {
+			/* background: url('./images/sign/register07.png') no-repeat; */
+			width: 40%;
+			height: 40px;
+			text-align: center;
+			/* align:center */
+			margin: 70px auto 40px;
+
+		}
+
+		.sign img {
+			height: 100%;
+			width: 100%;
+		}
+
+		#close {
+			position: fixed;
+			right: 20px;
+			top: 20px;
+			height: 32px;
+			/* width: 32px; */
+
+		}
+
+		.qq {
+			height: 44px;
+			margin-bottom: 5%;
+			color: white;
+			line-height: 44px;
+			position: relative;
+			display: flex;
+		}
+
+		.qq .xx {
+			width: 100%;
+			height: 100%;
+			flex: 6;
+			background: url('./images/sign/input03.png') no-repeat;
+			background-size: 92% 100%
+		}
+
+		.qq .word {
+			/* margin-left: 20px; */
+			padding-left: 20px;
+			float: left;
+			font-size: 12px;
+			width: 40px;
+			height: 100%;
+			white-space: nowrap;
+			flex: 1;
+
+		}
+
+		.qq .kuang {
+			width: 85%;
+			height: 100%;
+			float: left;
+			margin-left: 20px;
+
+		}
+
+		.qq input {
+			position: absolute;
+			text-indent: 0;
+			background: transparent;
+			border: none;
+			resize: none;
+			padding-left: 8px;
+			outline: none;
+			/*清除选中效果的默认蓝色边框 */
+			-webkit-appearance: none;
+			/*清除浏览器默认的样式 */
+			line-height: normal;
+			font-size: 18px;
+			left: 34%;
+			height: 100%;
+		}
+
+		.qq .icon {
+			/* background: url("./images/sign/register15.png") no-repeat; */
+			position: absolute;
+			height: 22px;
+			width: 30px;
+			left: 25%;
+			top: 27%;
+
+		}
+
+		.qq .icon1 {
+			background: url("./images/sign/register11.png") no-repeat;
+			background-size: cover;
+		}
+
+		.qq .icon2 {
+			background: url("./images/sign/register15.png") no-repeat;
+			background-size: cover;
+		}
+
+		.qq .icon3 {
+			background: url("./images/sign/register19.png") no-repeat;
+			background-size: cover;
+			width: 20px
+		}
+
+		.qq .icon4 {
+			background: url("./images/sign/register19.png") no-repeat;
+			background-size: cover;
+			width: 20px
+		}
+
+		input::-webkit-input-placeholder {
+			/* placeholder颜色  */
+			color: #aab2bd;
+			/* placeholder字体大小  */
+			font-size: 14px;
+			/* placeholder位置  */
+
+		}
+
+		.save {
+			width: 70%;
+			background: #ff72c5;
+			color: #fff;
+			height: 44px;
+			line-height: 44px;
+			border-radius: 6px;
+			text-align: center;
+			margin: 20px auto 0;
+		}
+	</style>
+</head>
+
+<body>
+	<img id="bg_register" src="./images/login/login.png" alt="">
+	<div id="register">
+		<div class="sign">
+			<img src="./images/sign/register07.png" alt>
+		</div>
+		<img src="./images/sign/register03.png" alt="" id="close">
+		<div class="qq">
+			<span class="word">NAME:</span>
+			<div class="xx">
+				<img src="./images/sign/input03.png" alt class="kuang">
+				<input type="text" id="name" placeholder="Name">
+				<span class="icon icon1"></span>
+			</div>
+		</div>
+		<div class="qq">
+			<span class="word">E-MAIL:</span>
+			<div class="xx">
+				<!-- <img src="./images/sign/input03.png" alt class="kuang"> -->
+				<input type="text" id="email" placeholder="E-mail">
+				<span class="icon icon2"></span>
+			</div>
+		</div>
+		<div class="qq">
+			<span class="word">PASSW:</span>
+			<div class="xx">
+				<img src="./images/sign/input03.png" alt class="kuang">
+				<input type="password" id="password" placeholder="Password">
+				<span class="icon icon3"></span>
+			</div>
+		</div>
+		<div class="qq">
+			<span class="word">REPEAT:</span>
+			<div class="xx">
+				<img src="./images/sign/input03.png" alt class="kuang">
+				<input type="password" id="password2" placeholder="Password">
+				<span class="icon icon4"></span>
+			</div>
+		</div>
+		<div class="save" id='save'>
+			<p>SAVE</p>
+		</div>
+	</div>
+</body>
+
+</html>
+
+<script>
+	// 处理点击事件
+	var _openw = null;
+	var as = 'pop-in';// 默认窗口动画
+	/**
+	 * 打开新窗口
+	 * @param {String} id	加载的页面地址，也用作窗口标识
+	 * @param {String} t    页面的标题
+	 * @param {String} d	文档页面文件名称（doc目录下），不传入则使用页面的标题
+	 */
+	function clicked(id, t, d) {
+		if (_openw) { return; }  // 防止快速点击
+		var ws = {
+			scrollIndicator: 'none',
+			scalable: false,
+			popGesture: 'close',
+			backButtonAutoControl: 'close',
+			// titleNView: {
+			// 	autoBackButton: true,
+			// 	backgroundColor: '#D74B28',
+			// 	titleColor: '#CCCCCC'
+			// }
+		};
+		t && (ws.titleNView.titleText = t, d || (d = t.toLowerCase()));
+		d && (ws.titleNView.buttons = [{
+			fontSrc: '_www/helloh5.ttf',
+			text: '\ue301',
+			fontSize: '22px',
+			onclick: 'javascript:openDoc("/doc/' + d + '.html")'
+		}]);
+		_openw = plus.webview.create(id, id, ws);
+		_openw.addEventListener('loaded', function () {//页面加载完成后才显示
+			_openw && _openw.show(as, null, function () {
+				_openw = null;//避免快速点击打开多个页面
+			});
+		}, false);
+		_openw.addEventListener('hide', function () {
+			_openw = null;
+		}, false);
+		_openw.addEventListener('close', function () {//页面关闭后可再次打开
+			_openw = null;
+		}, false);
+	}
+
+	$("#close").click(function () {
+		location.href = 'login.html'
+	})
+
+
+	$(document).on("click", "#save", function () {
+		save();
+	})
+	
+	function save() {
+		var name = $("#name").val();
+		var email = $("#email").val();
+		var password = $("#password").val();
+		var password2 = $("#password2").val();
+		var url = 'http://47.52.91.217:30005/v2/register';
+		$.post(url, {
+			email: email,
+			name: name,
+			pwd: password,
+			pwd2: password2
+		}, function (msg) {
+			if (msg.result == 0) {
+				alert('register success');
+				localStorage.setItem('email', email);
+				localStorage.setItem('access_token', msg.access_token);
+				localStorage.setItem('invite_code', msg.invite_code);
+				localStorage.setItem('invitor', msg.invitor);
+				localStorage.setItem('name', msg.name);
+				localStorage.setItem('token', msg.token);
+				localStorage.setItem('usd', msg.usd);
+				location.href = 'index.html'
+			} else {
+				alert(msg.error_message)
+			}
+		})
+	}
+</script>

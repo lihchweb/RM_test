@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="./js/plugin.js"></script>
+  <script src="//cdn.bootcss.com/eruda/1.2.6/eruda.min.js"></script>
+	<script>
+		eruda.init()
+	</script>
+  <title>My TOKEN</title>
+  <style>
+    body {
+      background-color: #580068;
+    }
+
+    .head {
+      height: 50px;
+      background: url("./images/mytoken/my-token_01.png") no-repeat;
+      background-size: cover;
+      background-position: center 10%;
+      position: relative;
+    }
+
+    #headimg {
+      height: 25px;
+      position: absolute;
+      top: 50%;
+      left: 20px;
+      transform: translate(-50%, -50%);
+    }
+
+    .line {
+      border-bottom: 1px solid #792a87;
+      margin-bottom: 12px;
+    }
+
+    .a {
+      height: 25%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .pagetext p {
+      font-size: 20px;
+      color: #EAF500;
+      font-weight: bold;
+    }
+  </style>
+  <script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+</head>
+<div id="pop">
+  <div class="head">
+    <a href="my.html">
+      <img src="./images/cashout/daily_21.png" alt id="headimg"></a>
+  </div>
+  <div class="a">
+    <img src="./images/mytoken/my-token_03.png" alt="" style="height:65%">
+  </div>
+  <div class="line" style="margin-bottom:0"></div>
+  <div class="a" style="height:16%">
+    <div id="mytoken" style="font-size:24px;color:#EEDF5F;font-weight:700"> </div>
+  </div>
+  <div class="line"></div>
+  <div class="a">
+    <img src="./images/mytoken/my-token_06.png" alt="" height="30%" onclick="redeem()">
+  </div>
+  <div style="height:24%;padding-left:20px" class="pagetext">
+    <p>1.$5 for each 6000000 token</p>
+    <p>2.Every click on an exchange</p>
+  </div>
+</div>
+
+</html>
+
+<script>
+  $(function () {
+    var mytoken = localStorage.getItem('token');
+
+    $("#mytoken").text(mytoken);
+  })
+  function redeem() {
+    var url = 'http://47.52.91.217:30005/v2/usd/exchange';
+    var access_token = localStorage.getItem('access_token');
+    $.post(url + '?access_token=' + access_token, {}, function (msg) {
+      if (msg.result == 0) {
+        $("#mytoken").text(msg.token_balance);
+        localStorage.setItem('token', msg.token_balance);
+      } else {
+        alert(msg.error_message)
+      }
+    })
+
+
+  }
+</script>

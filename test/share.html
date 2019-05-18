@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<script src="./js/plugin.js"></script>
+	<script src="//cdn.bootcss.com/eruda/1.2.6/eruda.min.js"></script>
+	<script>
+		eruda.init()
+	</script>
+	<title>SHARE</title>
+	<script type="text/javascript" src="js/jquery-3.3.1.min.js"></script>
+	<script type="text/javascript" src="js/common.js"></script>
+	<script type="text/javascript" charset="utf-8">
+		// H5 plus事件处理
+		function plusReady() {
+			var ev = document.getElementById('version');
+			ev && (ev.innerText = plus.runtime.version);
+			plus.webview.currentWebview().show('zoom-fade-out');
+			// 更新分享按钮
+			plus.share.getServices(function (s) {
+				for (var i in s) {
+					shares[s[i].id] = s[i];
+				}
+			}, function (e) {
+				console.log('updateShare failed: ' + JSON.stringify(e));
+			});
+			// 在流应用环境下显示“创建桌面图标”
+			if (navigator.userAgent.indexOf('StreamApp') >= 0) {
+				shortcut.style.display = 'block';
+			}
+			// 设置窗口优化隐藏
+			dragHide();
+			// 初始化分享按钮
+			shareBts.push({ title: '微信朋友圈', id: 'weixin', x: 'WXSceneTimeline' });
+			shareBts.push({ title: '微信好友', id: 'weixin', x: 'WXSceneSession' });
+			shareBts.push({ title: '新浪微博', id: 'sinaweibo' });
+			shareBts.push({ title: 'QQ', id: 'qq' });
+			shareBts.push({ title: '更多' });
+		}
+		document.addEventListener("plusready", plusReady, false);
+
+		// 判断是否为流应用环境
+		var bStream = navigator.userAgent.indexOf('StreamApp') >= 0;
+		var myinvite = localStorage.getItem('invite_code');
+		$("#myinvite").text(myinvite);
+		function shareWithSystem() {
+			plus.share.sendWithSystem ? plus.share.sendWithSystem({
+				content: 'Dollars! Come Rich Me App to win real money,invite friends to win more,inviting code:' + myinvite,
+				title: 'HelloH5',
+				href: bStream ? 'http://m3w.cn/s/HelloH5?__streamapp' : 'http://www.baidu.com/',
+				pictures: ('Android' == plus.os.name) ? null : ['_www/icon.png'],
+			}) : shareWithSystemNativeJS();
+		}
+		function shareWithSystemNativeJS() {
+			var main = plus.android.runtimeMainActivity(),
+				Intent = plus.android.importClass('android.content.Intent'),
+				File = plus.android.importClass('java.io.File'),
+				Uri = plus.android.importClass('android.net.Uri');
+			var intent = new Intent(Intent.ACTION_SEND),
+				p = plus.io.convertLocalFileSystemURL('_www/icon.png'),
+				f = new File(p),
+				uri = Uri.fromFile(f);
+			if (f.exists() && f.isFile()) {
+				intent.setType('image/*');
+				intent.putExtra(Intent.EXTRA_STREAM, uri);
+			} else {
+				intent.setType('text/plain');
+			}
+			intent.putExtra(Intent.EXTRA_SUBJECT, 'HelloH5');
+			intent.putExtra(Intent.EXTRA_TEXT, 'Dollars! Come Rich Me App to win real money,invite friends to win more,inviting code:' + myinvite);
+			intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			main.startActivity(Intent.createChooser(intent, '分享"HelloH5"应用'));
+		}
+	</script>
+</head>
+
+<body>
+	<div id="pop">
+		<div class="head">
+			<a href="index.html">
+				<img src="./images/cashout/daily_21.png" alt id="headimg"></a>
+		</div>
+		<div class="a">
+			<img src="./images/invite/invite04.png" alt class="ai">
+		</div>
+		<div class="line"></div>
+		<div class="a" style="height:10%">
+			<img src="./images/invite/invite08.png" alt class="ai" style="width:37%">
+			<div style="margin:0 20px;color:#EEDF5F" id="myinvite"></div>
+			<button onclick="shareWithSystem()" id="withsystem"></button>
+		</div>
+		<div class="line"></div>
+		<div class="a" style="height:10%">
+			<!-- <img src="./images/invite/invite15.png" alt class="ai" style="height:28%"> -->
+			<p style="width:37%;color: #EEDF5F;font-size: 14px;font-weight: bold;text-align: center;">Your Friends' Code</p>
+			<div id="underline"
+				style="padding:2px 5px;border-bottom: 1px solid #EEDF5F;width: 25%;margin-right: 3%;text-align: center;color: #EEDF5F;">
+				<input type="text" id="invite_code" size="10" style="background-color: transparent;border: 0;">
+			</div>
+			<button id="enter"></button>
+			<!-- <img src="./images/invite/invite16.png" alt class="ai" style="height:28%"> -->
+		</div>
+		<div class="line" style="margin:0;"></div>
+		<div class="a" style="height:4%;margin:20px 0">
+			<img src="./images/invite/invite20.png" alt class="ai" style="height:80%">
+		</div>
+		<div class="a" style="height:4%;margin:20px 0 0 20px">
+			<a href="javascript:receiveAward()">
+				<img src="./images/invite/invite24.png" alt class="ai" style="height:80%">
+			</a>
+		</div>
+		<div class="a" style="height:6%">
+			<img src="./images/invite/invite28.png" alt class="qq" id="img1">
+			<img src="./images/invite/invite282.png" alt style="display:none" class="qq" onclick="todaylist()" id="img2">
+			<img src="./images/invite/invite292.png" alt class="qq" onclick="historylist()" id="img3">
+			<img src="./images/invite/invite29.png" alt style="display:none" class="qq" id="img4">
+		</div>
+
+		<div class="a" style="height:8%;justify-content:space-between;padding:0 40px;color:#EEDF5F">
+			<div class="nnn">
+				<span style="font-size:20px">Friends</span>&nbsp;&nbsp;
+				<span style="font-size:20px" id="total"></span>
+			</div>
+			<div class="nnn">
+				<span style="font-size:20px" id="token"></span>&nbsp;&nbsp;
+				<!-- <span style="font-size:20px">5</span> -->
+			</div>
+		</div>
+		<div class="line"></div>
+		<div class="a ddd" style="justify-content:space-between;color:#EEDF5F;padding:0 40px" id="sharelist">
+			<div class="nnn" style="height:100%;">
+				<img src="./images/invite/invite27.png" alt="" class="oo" style="vertical-align:middle">
+				<span class="name" style="line-height:20px ;">Name</span>
+			</div>
+			<div class="nnn" style="height:100%;">
+				<span class="name" style="line-height:20px ;">5000000</span>&nbsp;&nbsp;
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
+
+<script>
+	var html = '';
+	$(function () {
+		var myinvite = localStorage.getItem('invite_code');
+		var invitor = localStorage.getItem('invitor');
+		if (invitor) {
+			$("#invite_code").hide();
+			$("#underline").text(invitor);
+			$("#enter").hide();
+		}
+		$("#myinvite").text(myinvite);
+		todaylist()
+	})
+	$("#enter").click(function () {
+		var url = 'http://47.52.91.217:30005/v2/invite';
+		var access_token = localStorage.getItem('access_token');
+		var invite_code = $("#invite_code").val();
+		if (!invite_code) return false;
+		$.post(url + '?access_token=' + access_token, { invite_code: invite_code }, function (msg) {
+			if (msg.result == 0) {
+				$("#invite_code").hide();
+				$("#underline").text(invite_code)
+				localStorage.setItem('invitor', invite_code)
+				$('#enter').hide();
+			} else {
+				alert(msg.error_message)
+			}
+		})
+	})
+	function receiveAward(){
+		var url = 'http://47.52.91.217:30005/v2/invite/reward';
+		var access_token = localStorage.getItem('access_token');
+		$.post(url + '?access_token=' + access_token, { }, function (msg) {
+			if (msg.result == 0) {
+				location.reload();
+			}else{
+				alert(msg.error_message);
+			}
+		})
+	}
+	function todaylist() {
+		$("#img3").show();
+		$("#img4").hide();
+		$("#img1").show();
+		$("#img2").hide();
+		var url = 'http://47.52.91.217:30005/v2/invitees';
+		var access_token = localStorage.getItem('access_token');
+		$.get(url + '?access_token=' + access_token, { type: 1 }, function (msg) {
+			if (msg.result == 0) {
+				$("#total").text(msg.total)
+				$("#token").text(msg.token)
+				$.each(msg.data, function (i, val) {
+					html += '<div class="nnn" style="height:100%;"><img src="./images/invite/invite27.png" alt="" class="oo" style="vertical-align:middle"><span class="name" style="line-height:20px ;">' + val.name + '</span></div><div class="nnn" style="height:100%;"><span class="name" style="line-height:20px ;">' + val.token + '</span>&nbsp;&nbsp;</div>';
+				})
+				$("#sharelist").html(html);
+			} else {
+				alert(msg.error_message)
+			}
+		})
+	}
+	function historylist() {
+		$("#img3").hide();
+		$("#img4").show();
+		$("#img1").hide();
+		$("#img2").show();
+		var url = 'http://47.52.91.217:30005/v2/invitees';
+		var access_token = localStorage.getItem('access_token');
+		$.get(url + '?access_token=' + access_token, { type: 2 }, function (msg) {
+			$("#total").text(msg.total)
+			$("#token").text(msg.token)
+			if (msg.result == 0) {
+				$.each(msg.data, function (i, val) {
+					html += '<div class="nnn" style="height:100%;"><img src="./images/invite/invite27.png" alt="" class="oo" style="vertical-align:middle"><span class="name" style="line-height:20px ;">' + val.name + '</span></div><div class="nnn" style="height:100%;"><span class="name" style="line-height:20px ;">' + val.token + '</span>&nbsp;&nbsp;</div>';
+				})
+				$("#sharelist").html(html);
+			} else {
+				alert(msg.error_message)
+			}
+		})
+	}
+</script>
+
+<style>
+	body {
+		
+		background-color: #580068;
+	}
+
+	.a {
+		margin-top: 8%;
+		height: 14%;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	#withsystem {
+		width: 22%;
+		height: 48px;
+		border: none;
+		background: url("./images/invite/invite11.png") no-repeat;
+		background-size: cover;
+		background-position: center center;
+		position: relative;
+		margin-bottom: 3%;
+	}
+
+	#enter {
+		width: 22%;
+		height: 48px;
+		border: none;
+		background: url("./images/invite/invite16.png") no-repeat;
+		background-size: cover;
+		background-position: center center;
+		position: relative;
+		margin-bottom: 3%;
+	}
+
+	.ddd {
+		height: 5%;
+	}
+
+	.oo {
+		height: 80%;
+	}
+
+	.nnn {
+		white-space: nowrap;
+	}
+
+	.qq {
+		height: 70%;
+		width: 47%
+	}
+
+	.ai {
+		height: 44%;
+		width: 90%
+	}
+
+	.head {
+		height: 50px;
+		background: url("./images/invite/invite01.png") no-repeat;
+		background-size: cover;
+		background-position: center center;
+		position: relative;
+	}
+
+	#headimg {
+		height: 25px;
+		position: absolute;
+		top: 50%;
+		left: 20px;
+		transform: translate(-50%, -50%);
+	}
+
+	.line {
+		border-bottom: 1px solid #792a87;
+		margin-bottom: 12px;
+	}
+</style>
